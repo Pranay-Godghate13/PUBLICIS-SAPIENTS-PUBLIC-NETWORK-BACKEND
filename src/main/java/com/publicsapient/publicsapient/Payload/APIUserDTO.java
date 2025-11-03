@@ -1,4 +1,4 @@
-package com.publicsapient.publicsapient.Model;
+package com.publicsapient.publicsapient.Payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,15 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
-    private Long id;
+public class APIUserDTO {
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
     private String ssn;
-    private Integer age;
+    private int age;
     private String role;
-    
-    
 }

@@ -2,11 +2,12 @@ package com.publicsapient.publicsapient.Service;
 
 import java.util.List;
 
-import com.publicsapient.publicsapient.Model.User;
+import com.publicsapient.publicsapient.Model.APIUser;
+
 
 public interface UserService {
     String loadData();
-    List<User> getAllUsers(String keyword);
-    User getUserById(Long id);
-    User getUserByEmail(String email);
+    List<APIUser> getAllUsers(String keyword);
+    APIUser getUserById(Long id);
+    APIUser getUserByEmail(String email);
 }
