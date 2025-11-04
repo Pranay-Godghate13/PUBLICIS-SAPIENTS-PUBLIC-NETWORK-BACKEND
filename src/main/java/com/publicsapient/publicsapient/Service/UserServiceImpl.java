@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.publicsapient.publicsapient.Exception.ResourceNotFoundException;
 import com.publicsapient.publicsapient.Model.APIUser;
 import com.publicsapient.publicsapient.Payload.APIUserDTO;
 import com.publicsapient.publicsapient.Payload.ResponseDTO;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public APIUserDTO findUserById(Long id) {
 
         APIUser userFromDb=userRepository.findById(id)
-                        .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with user id "+id+" not present"));
+                        .orElseThrow(()->new ResourceNotFoundException("Id", "id", id));
         APIUserDTO userDTO=modelMapper.map(userFromDb,APIUserDTO.class);
         return userDTO;
     }
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public APIUserDTO findUserByEmail(String email) {
         APIUser userFromDb=userRepository.findByEmail(email);
         if(userFromDb==null)
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with email "+email+" not present");
+        throw new ResourceNotFoundException("Email", "email", email);
         APIUserDTO userDTO=modelMapper.map(userFromDb, APIUserDTO.class);
         return userDTO;
         
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
     public ResponseDTO findByKeyword(String keyword) {
         List<APIUser> usersFromDb=userRepository.findByKeyword(keyword);
         if(usersFromDb==null || usersFromDb.isEmpty())
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with user keyword "+keyword+" not present");
+        throw new ResourceNotFoundException("keyword", "keyword", keyword);
         List<APIUserDTO> userDTO=usersFromDb.stream()
                             .map(m->modelMapper.map(m, APIUserDTO.class))
                             .toList();

@@ -37,37 +37,17 @@ public class UserController {
    
     @PostMapping("/user/loadData")
     public ResponseEntity<String> loadData() {
-        try
-        {
-            String message=userServiceImpl.loadData();
-            return new ResponseEntity<String>(message, HttpStatus.OK);
-        }
-        catch(DataIntegrityViolationException e)
-        {
-            String message="Invalid data";
-            return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
-        }
-        catch(Exception e)
-        {
-            String message="Data load failed";
-            return new ResponseEntity<String>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        String message=userServiceImpl.loadData();
+        return new ResponseEntity<String>(message, HttpStatus.OK);
     }
     
     
     
     @GetMapping("/user/id/{id}")
     public ResponseEntity<APIUserDTO> getUserById(@PathVariable Long id) {
-        try
-        {
-            APIUserDTO user=userServiceImpl.findUserById(id);
-            return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
-        }
-        catch(ResponseStatusException e)
-        {
-            return new ResponseEntity<>(e.getStatusCode());
-        }
-           
+        
+        APIUserDTO user=userServiceImpl.findUserById(id);
+        return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);   
     }
     
     // @GetMapping("/user")
@@ -79,31 +59,15 @@ public class UserController {
     
     @GetMapping("/user/email/{email}")
     public ResponseEntity<APIUserDTO> getUserByEmail(@PathVariable String email) {
-        try
-        {
-            APIUserDTO user=userServiceImpl.findUserByEmail(email);
-            return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
-        }
-        catch(ResponseStatusException e)
-        {
-            return new ResponseEntity<>(e.getStatusCode());
-        }
-        
+        APIUserDTO user=userServiceImpl.findUserByEmail(email);
+        return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
     }
     
 
     @GetMapping("/user/keyword/{keyword}")
     public ResponseEntity<ResponseDTO> getUsersByKeyword(@PathVariable String keyword) {
-        try
-        {
-            ResponseDTO users=userServiceImpl.findByKeyword(keyword);
-            return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
-        }
-        catch(ResponseStatusException e)
-        {
-            return new ResponseEntity<>(e.getStatusCode());
-        }
-        
+        ResponseDTO users=userServiceImpl.findByKeyword(keyword);
+        return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
     }
     
 
