@@ -1,14 +1,11 @@
 package com.publicsapient.publicsapient.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RestTemplate restTemplate;
-    @Autowired
-    private EntityManager centityManager;
+
 
     @Override
     public String loadData() {
@@ -82,23 +78,31 @@ public class UserServiceImpl implements UserService {
         
     }
 
-    @Override
-    public List<APIUser> findUsersByKeyword(String keyword) {
-       FullTextEntityManager fullTextEntityManager=Search.getFullTextEntityManager(centityManager);
-       QueryBuilder qb=fullTextEntityManager.getSearchFactory()
-                        .buildQueryBuilder()
-                        .forEntity(APIUser.class)
-                        .get();
-        org.apache.lucene.search.Query query=qb.keyword()
-                                                .onField("firstName")
-                                                .matching("Emily")
-                                                .createQuery();
-        org.hibernate.search.jpa.FullTextQuery jpaQuery=fullTextEntityManager.createFullTextQuery(query, APIUser.class);
-        List<APIUser> results=jpaQuery.getResultList();
-        return results;
+    public List<APIUser> findByKeyword(String keyword) {
+        List<APIUser> users=userRepository.findByKeyword(keyword);
+        return users;
     }
 
-    
+  
 
+    // @Override
+    // public List<APIUser> findUsersByKeyword(String keyword) {
+    //    initializeHibernateSearch(); 
+    //    FullTextEntityManager fullTextEntityManager=Search.getFullTextEntityManager(centityManager);
+    //    QueryBuilder qb=fullTextEntityManager.getSearchFactory()
+    //                     .buildQueryBuilder()
+    //                     .forEntity(APIUser.class)
+    //                     .get();
+    //     org.apache.lucene.search.Query query=qb.keyword()
+    //                                             .onField("firstName")
+    //                                             .matching("Emily")
+    //                                             .createQuery();
+    //     org.hibernate.search.jpa.FullTextQuery jpaQuery=fullTextEntityManager.createFullTextQuery(query, APIUser.class);
+    //     List<APIUser> results=jpaQuery.getResultList();
+    //     return results;
+    // }
+
+    
+  
     
 }
