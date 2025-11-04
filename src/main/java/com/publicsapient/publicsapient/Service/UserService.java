@@ -10,5 +10,6 @@ public interface UserService {
     APIUser findUserById(Long id);
     // List<APIUser> getAllUsers();
     APIUser findUserByEmail(String email);
+    List<APIUser> findUsersByKeyword(String keyword);
     
 }

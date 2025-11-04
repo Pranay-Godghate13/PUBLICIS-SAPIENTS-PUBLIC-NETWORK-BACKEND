@@ -34,6 +34,12 @@ public class UserController {
         return "Data loaded in db successfull";
     }
     
+    @GetMapping("/user/keyword/{keyword}")
+    public List<APIUser> getUsersByKeyword(@PathVariable String keyword) {
+        List<APIUser> users=userServiceImpl.findUsersByKeyword(keyword);
+        return users;
+    }
+    
     @GetMapping("/user/id/{id}")
     public APIUser getUserById(@PathVariable Long id) {
         APIUser user=userServiceImpl.findUserById(id);
