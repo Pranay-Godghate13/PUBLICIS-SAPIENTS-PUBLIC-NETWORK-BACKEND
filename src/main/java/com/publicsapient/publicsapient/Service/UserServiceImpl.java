@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
             return user;
         }).toList();
         userRepository.saveAll(userList);
-        return "Data loaded";
+        return "Data loaded successfully";
     }
 
     // @Override
@@ -58,51 +58,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public APIUser findUserById(Long id) {
         APIUser user=userRepository.findById(id)
-                        .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+                        .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with user id "+id+" not present"));
         return user;
     }
 
     @Override
     public APIUser findUserByEmail(String email) {
-        // List<APIUser> users=userRepository.findAll();
-        // for(APIUser user:users)
-        // {
-        //     if(user.getEmail().equals(email))
-        //     return user;
-        // }
-        // throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         APIUser user=userRepository.findByEmail(email);
         if(user==null)
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with email "+email+" not present");
         return user;
         
     }
 
+    @Override
     public List<APIUser> findByKeyword(String keyword) {
         List<APIUser> users=userRepository.findByKeyword(keyword);
+        if(users==null || users.isEmpty())
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with user keyword "+keyword+" not present");
         return users;
     }
-
-  
-
-    // @Override
-    // public List<APIUser> findUsersByKeyword(String keyword) {
-    //    initializeHibernateSearch(); 
-    //    FullTextEntityManager fullTextEntityManager=Search.getFullTextEntityManager(centityManager);
-    //    QueryBuilder qb=fullTextEntityManager.getSearchFactory()
-    //                     .buildQueryBuilder()
-    //                     .forEntity(APIUser.class)
-    //                     .get();
-    //     org.apache.lucene.search.Query query=qb.keyword()
-    //                                             .onField("firstName")
-    //                                             .matching("Emily")
-    //                                             .createQuery();
-    //     org.hibernate.search.jpa.FullTextQuery jpaQuery=fullTextEntityManager.createFullTextQuery(query, APIUser.class);
-    //     List<APIUser> results=jpaQuery.getResultList();
-    //     return results;
-    // }
-
-    
-  
     
 }
