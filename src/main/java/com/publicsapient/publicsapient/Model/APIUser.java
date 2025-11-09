@@ -34,6 +34,8 @@ public class APIUser {
     private int age;
     
     private String role;
+
+    private String gender;
     
     
 }

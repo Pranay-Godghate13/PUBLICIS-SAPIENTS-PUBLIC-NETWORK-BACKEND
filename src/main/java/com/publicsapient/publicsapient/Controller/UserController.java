@@ -9,6 +9,8 @@ import com.publicsapient.publicsapient.Payload.APIUserDTO;
 import com.publicsapient.publicsapient.Payload.ResponseDTO;
 import com.publicsapient.publicsapient.Service.UserServiceImpl;
 
+import jakarta.websocket.server.PathParam;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -34,7 +37,7 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-   
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/user/loadData")
     public ResponseEntity<String> loadData() {
         String message=userServiceImpl.loadData();
@@ -63,9 +66,9 @@ public class UserController {
         return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
     }
     
-
-    @GetMapping("/user/keyword/{keyword}")
-    public ResponseEntity<ResponseDTO> getUsersByKeyword(@PathVariable String keyword) {
+    @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping("/user/keyword")
+    public ResponseEntity<ResponseDTO> getUsersByKeyword(@RequestParam String keyword) {
         ResponseDTO users=userServiceImpl.findByKeyword(keyword);
         return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
     }

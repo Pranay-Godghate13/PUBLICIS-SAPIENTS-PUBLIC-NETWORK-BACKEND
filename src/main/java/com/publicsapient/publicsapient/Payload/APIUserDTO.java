@@ -15,4 +15,5 @@ public class APIUserDTO {
     private String ssn;
     private int age;
     private String role;
+    private String gender;
 }
