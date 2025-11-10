@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public APIUserDTO findUserById(Long id) {
 
         APIUser userFromDb=userRepository.findById(id)
-                        .orElseThrow(()->new ResourceNotFoundException("Id", "id", id));
+                        .orElseThrow(()->new ResourceNotFoundException("User Id", "id", id));
         APIUserDTO userDTO=modelMapper.map(userFromDb,APIUserDTO.class);
         return userDTO;
     }
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
     public APIUserDTO findUserByEmail(String email) {
         APIUser userFromDb=userRepository.findByEmail(email);
         if(userFromDb==null)
-        throw new ResourceNotFoundException("Email", "email", email);
+        throw new ResourceNotFoundException("User email", "email", email);
         APIUserDTO userDTO=modelMapper.map(userFromDb, APIUserDTO.class);
         return userDTO;
         

@@ -9,15 +9,24 @@ import com.publicsapient.publicsapient.Payload.APIUserDTO;
 import com.publicsapient.publicsapient.Payload.ResponseDTO;
 import com.publicsapient.publicsapient.Service.UserServiceImpl;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.websocket.server.PathParam;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 
-
+@Validated
 @RestController
 // @RequestMapping("/api")
 public class UserController {
@@ -46,11 +55,11 @@ public class UserController {
     
     
     
-    @GetMapping("/user/id/{id}")
-    public ResponseEntity<APIUserDTO> getUserById(@PathVariable Long id) {
-        
+    @GetMapping("/user/id")
+    public ResponseEntity<APIUserDTO> getUserById(@RequestParam@NotNull(message = "Id is required") @Min(value = 1,message="Id must be atleast 1") @Max(value = 30,message = "Id can be atmost 30") Long id) {
+       
         APIUserDTO user=userServiceImpl.findUserById(id);
-        return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);   
+        return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
     }
     
     // @GetMapping("/user")
@@ -60,8 +69,9 @@ public class UserController {
     //     return users;
     // }
     
-    @GetMapping("/user/email/{email}")
-    public ResponseEntity<APIUserDTO> getUserByEmail(@PathVariable String email) {
+    @GetMapping("/user/email")
+    public ResponseEntity<APIUserDTO> getUserByEmail(@RequestParam @NotBlank(message = "Mail should not be blank") @Email(message = "Enter valid email id") String email) {
+        
         APIUserDTO user=userServiceImpl.findUserByEmail(email);
         return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
     }
@@ -69,8 +79,10 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/user/keyword")
     public ResponseEntity<ResponseDTO> getUsersByKeyword(@RequestParam String keyword) {
-        ResponseDTO users=userServiceImpl.findByKeyword(keyword);
-        return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
+        
+            ResponseDTO users=userServiceImpl.findByKeyword(keyword);
+            return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
+        
     }
     
 
