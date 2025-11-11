@@ -74,13 +74,6 @@ public class UserServiceImpl implements UserService {
         return "Data loaded successfully";
     }
 
-    // @Override
-    // public List<APIUser> getAllUsers() {
-    //     List<APIUser> users=userRepository.findAll();
-    //     return users;
-    // }
-
-
     @Override
     public APIUserDTO findUserById(Long id) {
 

@@ -9,6 +9,11 @@ import com.publicsapient.publicsapient.Payload.APIUserDTO;
 import com.publicsapient.publicsapient.Payload.ResponseDTO;
 import com.publicsapient.publicsapient.Service.UserServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -49,6 +54,14 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/user/loadData")
+    @Operation(summary = "Load Data", description = "API to load data of users in db.")
+    @ApiResponses(
+        {
+            @ApiResponse(responseCode = "200",description = "Data loaded successfully"),
+            @ApiResponse(responseCode = "400",description = "Invalid input",content = @Content),
+            @ApiResponse(responseCode = "500",description = "Internal server error",content = @Content)
+        }
+    )
     public ResponseEntity<String> loadData() {
         String message=userServiceImpl.loadData();
         return new ResponseEntity<String>(message, HttpStatus.OK);
@@ -57,21 +70,31 @@ public class UserController {
     
     
     @GetMapping("/user/id")
-    public ResponseEntity<APIUserDTO> getUserById(@RequestParam@NotNull(message = "Id is required") @Min(value = 1,message="Id must be atleast 1") @Max(value = 30,message = "Id can be atmost 30") Long id) {
+    @Operation(summary = "Get user by ID", description = "API to fetch user data with help of ID")
+    @ApiResponses(
+        {
+            @ApiResponse(responseCode = "200",description = "User fetched successfully"),
+            @ApiResponse(responseCode = "400",description = "Invalid input",content = @Content),
+            @ApiResponse(responseCode = "500",description = "Internal server error",content = @Content)
+        }
+    )
+    public ResponseEntity<APIUserDTO> getUserById(@Parameter(description = "ID of user that you wish to fetch information.") @RequestParam@NotNull(message = "Id is required") @Min(value = 1,message="Id must be atleast 1") @Max(value = 30,message = "Id can be atmost 30") Long id) {
        
         APIUserDTO user=userServiceImpl.findUserById(id);
         return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
     }
     
-    // @GetMapping("/user")
-    // public List<APIUser> getAllUsers() {
-    //     List<APIUser> users=userServiceImpl.getAllUsers();
-        
-    //     return users;
-    // }
     
     @GetMapping("/user/email")
-    public ResponseEntity<APIUserDTO> getUserByEmail(@RequestParam @NotBlank(message = "Mail should not be blank") @Email(message = "Enter valid email id") String email) {
+    @Operation(summary = "Get user by Email", description = "API to fetch user data with help of Email")
+    @ApiResponses(
+        {
+            @ApiResponse(responseCode = "200",description = "User fetched successfully"),
+            @ApiResponse(responseCode = "400",description = "Invalid input",content = @Content),
+            @ApiResponse(responseCode = "500",description = "Internal server error",content = @Content)
+        }
+    )
+    public ResponseEntity<APIUserDTO> getUserByEmail(@Parameter(description = "Email of user that you wish to fetch information.") @RequestParam @NotBlank(message = "Mail should not be blank") @Email(message = "Enter valid email id") String email) {
         
         APIUserDTO user=userServiceImpl.findUserByEmail(email);
         return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
@@ -79,7 +102,15 @@ public class UserController {
     
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/user/keyword")
-    public ResponseEntity<ResponseDTO> getUsersByKeyword(@RequestParam @NotBlank(message = "Enter the keyword") @Size(min = 3,message = "Must be >3 characters") String keyword) {
+    @Operation(summary = "Get user by keyword", description = "API to fetch user data with help of keyword")
+    @ApiResponses(
+        {
+            @ApiResponse(responseCode = "200",description = "User fetched successfully"),
+            @ApiResponse(responseCode = "400",description = "Invalid input",content = @Content),
+            @ApiResponse(responseCode = "500",description = "Internal server error",content = @Content)
+        }
+    )
+    public ResponseEntity<ResponseDTO> getUsersByKeyword(@Parameter(description = "Keyword from which you wish to fetch information.") @RequestParam @NotBlank(message = "Enter the keyword") @Size(min = 3,message = "Must be >3 characters") String keyword) {
         
             ResponseDTO users=userServiceImpl.findByKeyword(keyword);
             return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
