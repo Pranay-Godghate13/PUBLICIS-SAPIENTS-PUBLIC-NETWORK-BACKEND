@@ -153,7 +153,9 @@ public class UserServiceTest {
     @Test
     public void testFindByKeywordSuccess() {
         APIUser user = new APIUser();
+        user.setFirstName("Emily");
         APIUserDTO userDTO = new APIUserDTO();
+        userDTO.setFirstName(user.getFirstName());
 
         when(userRepository.findByKeyword("emi"))
                 .thenReturn(List.of(user));
